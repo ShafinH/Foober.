@@ -1,0 +1,205 @@
+<!DOCTYPE HTML>
+
+
+
+<html>
+
+<head>
+	<title>Foober</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="stylesheet" href="assets/css/main.css" />
+</head>
+
+<body class="subpage">
+
+	<!-- Header -->
+	<header id="header">
+		<nav class="left">
+			<a href="#menu"><span>Menu</span></a>
+		</nav>
+		<a href="index.html" class="logo">Foober</a>
+		<nav class="right">
+
+		</nav>
+	</header>
+
+	<!-- Menu -->
+	<nav id="menu">
+		<ul class="links">
+			<li><a href="index.html">Home</a></li>
+			<li><a href="donation.html">Donation Map</a></li>
+			<li><a href="contact.html">Contact Us</a></li>
+
+		</ul>
+		<ul class="actions vertical">
+			<li><a href="#" class="button fit">Login</a></li>
+		</ul>
+	</nav>
+
+	<!-- Main -->
+	<section id="main" class="wrapper">
+
+		<div class="inner">
+			<header class="align-center">
+				<h1>Donation Map</h1>
+				<p>All the donation postings are shown here</p>
+			</header>
+		
+			<form>
+				<label for="name">Full name: </label><br>
+				<input type="text" id="fname" name="name"><br>
+				<label for="latitude">Latitude: </label>
+				<input type="float" id="ltd" name="ltd"><br>
+				<label for="longitude">Longitude: </label>
+				<input type="float" id="long" name="long"><br>
+				<a href="https://www.latlong.net/convert-address-to-lat-long.html" target="_blank">Convert Address to latitude and longitude</a>
+				<label for="foodName">Type of Food: </label>
+				<input type="text" id="food" name="food"><br>
+				<label for="quantity">Quantity of food: </label>
+				<input type="number" id="quantity" name="quantity"><br>
+				<label for="contact">Contact Information: </label>
+				<input type="text" id="contact" name="contact"><br>
+				<input type="submit" value="Submit" onclick="depositAddress()">
+			</form>
+			<div id="map"></div>
+			<script>
+				function depositAddress() {
+					var infoWindow = new google.maps.InfoWindow;
+
+					let oldData = localStorage.getItem("data");
+					let fullname = document.getElementById('fname');
+					let latitude = document.getElementById('ltd');
+					let longitude = document.getElementById('long');
+					let food = document.getElementById('food')
+					let quantity = document.getElementById('quantity')
+					var point = new google.maps.LatLng(
+						latitude, longitude
+					)
+					var userInfo = document.createElement('div');
+					var address = document.createElement('text')
+					address.textContent = latitude + ', ' + longitude
+					var edible = document.createElement('text')
+					edible.textContent = food
+					var amount = document.createElement('text')
+					amount.textContent = quantity
+					userInfo.appendChild(address).appendChild(document.createElement('br')).appendChild(edible).appendChild(document.createElement('br')).appendChild(quantity)
+
+					infowincontent.appendChild(userInfo);
+					var marker = new google.maps.Marker({
+						map: map,
+						position: point,
+					});
+					marker.addListener('click', function () {
+						infoWindow.setContent(infowincontent);
+						infoWindow.open(map, marker);
+					});
+
+					let finalArray = new Array;
+					finalArray.push({ 'fullName': fullname, 'latitude': latitude, 'longitude': longitude, 'food': food, 'quantity': quantity })
+					let newData = oldData.push(finalArray)
+					localStorage.setItem("data", newData.toString());
+				}
+			</script>
+
+			<script>
+
+				function initMap() { // called once when the map is being made
+
+					var map = new google.maps.Map(document.getElementById('map'), {
+						center: new google.maps.LatLng(40.7128,-74.0060),
+						zoom: 8
+					});
+					var infoWindow = new google.maps.InfoWindow;
+
+					// Change this depending on the name of your PHP or XML file
+					getData(function (data) {
+
+						data.forEach.call(markers, function (markerElem) {
+							var name = markerElem.getAttribute('name');
+							var ltd = markerElem.getAttribute('latitude');
+							var long = markerElem.getAttribute('longitude');
+							var food = markerElem.getAttribute('food')
+							var quantity = markerElem.getAttribute('quantity')
+							var myLatLng = {lat: ltd, lng: long};
+
+							var infowincontent = document.createElement('div');
+							var strong = document.createElement('strong');
+							strong.textContent = name
+							infowincontent.appendChild(strong);
+							infowincontent.appendChild(document.createElement('br'));
+
+
+							var userInfo = document.createElement('div');
+							var address = document.createElement('text')
+							address.textContent = ltd + ', ' + long
+							var edible = document.createElement('text')
+							edible.textContent = food
+							var amount = document.createElement('text')
+							amount.textContent = quantity
+							userInfo.appendChild(address).appendChild(document.createElement('br')).appendChild(edible).appendChild(document.createElement('br')).appendChild(quantity)
+							window.alert(address.textContent)
+
+							infowincontent.appendChild(userInfo);
+							var marker = new google.maps.Marker({
+								map: map,
+								position: point,
+								
+							});
+							marker.addListener('click', function () {
+								infoWindow.setContent(infowincontent);
+								infoWindow.open(map, marker);
+							});
+						});
+					});
+
+		
+
+		
+				function getData(callBack){
+     				let data = []
+     				if(localStorage.getItem("data")!==null){data = localStorage.getItem("data")}
+					}
+
+				
+
+					marker.setMap(map);
+
+			</script>
+			<script
+				src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDjWfWoYtAhvc6i9C4V5SekngUKeyXOYoc&amp;&callback=initMap">
+				</script>
+
+
+		</div>
+	</section>
+
+	<!-- Footer -->
+	<footer id="footer">
+		<div class="inner">
+			<h2>Get In Touch</h2>
+			<ul class="actions">
+				<li>
+					<span class="icon fa-phone"></span> <a href="#">(669) - 203 - 1954 </a>
+				</li>
+				<li>
+					<span class="icon fa-envelope"></span>
+					<a href="#">shafin1025@gmail.com</a>
+				</li>
+				<li>
+					<span class="icon fa-map-marker"></span> 20300 Herriman Ave, Saratoga, CA 95070
+				</li>
+			</ul>
+		</div>
+
+
+		<!-- Scripts -->
+		<script src="assets/js/jquery.min.js"></script>
+		<script src="assets/js/jquery.scrolly.min.js"></script>
+		<script src="assets/js/skel.min.js"></script>
+		<script src="assets/js/util.js"></script>
+		<script src="assets/js/main.js"></script>
+
+</body>
+
+</html>
